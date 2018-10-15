@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Navbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'mdbreact';
 import { BrowserRouter as Router } from 'react-router-dom';
+import About from './About.js';
+import Home from './Home.js';
+import Play from './Play.js';
 
 
 export default class NavbarFeatures extends Component {
@@ -21,7 +24,7 @@ export default class NavbarFeatures extends Component {
     render() {
         return (
             <Router>
-                <Navbar  color="black" dark expand="sm">
+                <Navbar color="black" dark expand="sm">
                     <NavbarBrand >
                     {/*FLATSTORY BUT WE DONT NEED THIS*/}
                     </NavbarBrand>
@@ -29,17 +32,17 @@ export default class NavbarFeatures extends Component {
                     <Collapse isOpen = { this.state.collapse } navbar>
                         <NavbarNav left>
                           <NavItem active>
-                              <NavLink to="/">Home</NavLink>
+                              <NavLink exact to="/" render={Home}>Home</NavLink>
                           </NavItem>
                           <NavItem>
-                              <NavLink to="/about">About</NavLink>
+                              <NavLink exact to="/about" render={About} >About</NavLink>
                           </NavItem>
                           <NavItem>
-                              <NavLink to="/play">Play</NavLink>
+                              <NavLink exact to="/play" render={Play}>Play</NavLink>
                           </NavItem>
                         </NavbarNav>
                         <NavbarNav>
-
+                          
                         </NavbarNav>
                         <NavbarNav right>
                           <NavItem>

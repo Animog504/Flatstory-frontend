@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import FlatStoryGame from './game/FlatStoryGame'
+
 
 const GameContainer = (props) => {
   const style = {
@@ -9,23 +11,25 @@ const GameContainer = (props) => {
     color: "white"
   }
   return (
-    <div className="container" style={style}>
-  <div className="row">
+  <div className="container" style={style}>
+    GameContainer
+    <div className="row">
 
-    <div className="col">
-      <span className="align-middle">
-        Game Conatiner Column
-      </span>
+      <div className="col">
+        <span className="align-middle">
+          gameArea
+          
+        </span>
+      </div>
+
+      <div className="col">
+        <span className="align-middle">
+          chatBoxArea
+        </span>
+      </div>
+
     </div>
-
-    <div className="col">
-      <span className="align-middle">
-        Game Chat Box
-      </span>
-    </div>
-
   </div>
-</div>
   )
 }
 
