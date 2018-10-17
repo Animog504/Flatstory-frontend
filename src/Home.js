@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 
 const Home = (props) => {
   return (
-    <React.Fragment>
+    <div>
       I AM HOME!!! TADAIMA!!!
-    </React.Fragment>
+    </div>
   )
 }
 

@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Navbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'mdbreact';
 import { BrowserRouter as Router } from 'react-router-dom';
-import About from './About.js';
-import Home from './Home.js';
-import Play from './Play.js';
 
 
-export default class NavbarFeatures extends Component {
+
+export default class NavigationBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,10 +18,10 @@ export default class NavbarFeatures extends Component {
         this.setState({
             collapse: !this.state.collapse,
         });
+        console.log("click")
     }
     render() {
         return (
-            <Router>
                 <Navbar color="black" dark expand="sm">
                     <NavbarBrand >
                     {/*FLATSTORY BUT WE DONT NEED THIS*/}
@@ -31,18 +29,24 @@ export default class NavbarFeatures extends Component {
                     { !this.state.isWideEnough && <NavbarToggler onClick = { this.onClick } />}
                     <Collapse isOpen = { this.state.collapse } navbar>
                         <NavbarNav left>
-                          <NavItem active>
-                              <NavLink exact to="/" render={Home}>Home</NavLink>
+                          <NavItem>
+
+                             <NavLink  to="/" exact >Home</NavLink>
+
                           </NavItem>
                           <NavItem>
-                              <NavLink exact to="/about" render={About} >About</NavLink>
+
+                              <NavLink to="/about" exact >About</NavLink>
+
                           </NavItem>
                           <NavItem>
-                              <NavLink exact to="/play" render={Play}>Play</NavLink>
+
+                              <NavLink to="/play" exact >Play</NavLink>
+
                           </NavItem>
                         </NavbarNav>
                         <NavbarNav>
-                          
+
                         </NavbarNav>
                         <NavbarNav right>
                           <NavItem>
@@ -59,7 +63,6 @@ export default class NavbarFeatures extends Component {
                         </NavbarNav>
                     </Collapse>
                 </Navbar>
-            </Router>
         );
     }
 }
