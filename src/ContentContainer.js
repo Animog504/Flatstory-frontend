@@ -6,9 +6,9 @@ import FlatStoryGame from './game/FlatStoryGame'
 class ContentContainer extends React.Component{
   render(){
     const style = {
-      border: "1px solid blue",
+      //border: "1px solid blue",
       height: "800px",
-      padding: "10px",
+      //padding: "10px",
       color: "white"
     }
 

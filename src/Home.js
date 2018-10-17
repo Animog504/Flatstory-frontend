@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 const Home = (props) => {
   return (
     <div>
-      I AM HOME!!! TADAIMA!!!
+      <img src="https://i.postimg.cc/SsHC0g2f/tempHome.png" />
     </div>
   )
 }
