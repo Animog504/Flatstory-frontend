@@ -17,7 +17,9 @@ class App extends Component {
     super()
 
     this.state = {
-      currentTab: 'home'
+      currentTab: 'home',
+      isLoaded: false,
+      currentPlayer: null,
     }
   }
 
@@ -56,6 +58,9 @@ class App extends Component {
               </div>
           </Router>
         </div>
+
+
+
       </div>
     );
   }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'mdbreact';
 import { BrowserRouter as Router } from 'react-router-dom';
+import PlayerCard from './PlayerCard';
 
 
 
@@ -49,17 +50,65 @@ export default class NavigationBar extends Component {
 
                         </NavbarNav>
                         <NavbarNav right>
+
                           <NavItem>
-                            <Dropdown>
-                                <DropdownToggle nav caret>Signup/Login</DropdownToggle>
-                                <DropdownMenu>
-                                    <DropdownItem href="/signup">Signup</DropdownItem>
-                                    <DropdownItem href="/login">Login</DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
+                            {!this.props.currentPlayer ?
+
+                                  <button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#signupLoginModal">
+                                    Login/Signup
+                                  </button>
+                              :
+                              <PlayerCard style={{}} currentPlayer={{playerAvatar: null, playerName: "Scott", playerScore: 1337}} />
+                            }
                           </NavItem>
-                          <NavItem>
-                          </NavItem>
+                        </NavbarNav>
+                        <NavbarNav>
+
+
+
+                          <div class="modal fade" id="signupLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <form  onSubmit={e => {e.preventDefault(); debugger; console.log("form submit",e.target)}}>
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Login</h5>
+
+
+
+
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body" align="center">
+
+                                      <div class="imgcontainer">
+
+                                      </div>
+
+                                      <div class="container">
+                                        <label for="uname"><b>Username :</b></label>
+                                        <input type="text" placeholder="Enter Username" name="uname" required />
+                                        <br></br>
+                                        <label for="psw"><b>Password :</b></label>
+                                        <input type="password" placeholder="Enter Password" name="psw" required />
+                                        <br></br>
+
+
+                                      </div>
+
+
+
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Login</button>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+
                         </NavbarNav>
                     </Collapse>
                 </Navbar>
