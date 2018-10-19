@@ -32,6 +32,56 @@ class App extends Component {
     }
   }
 
+  handleFormLogin = (name, password) => {
+    //login stuff
+    console.log("Sending fetch with info:", name, password)
+    fetch('http://localhost:3000/api/v1/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify({
+        user: {
+          username: name,
+          password: password,
+        }
+      })
+    })
+    .then(r => r.json())
+    .then(r => {console.log(r); this.setState({
+      currentPlayer: r.user,
+    })})
+  }
+  handleFormRegister = (name, email, password) => {
+    fetch('http://localhost:3000/api/v1/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify({
+        user: {
+          username: name,
+          email: email,
+          password: password,
+          score: 0,
+        }
+      })
+    })
+    .then(r => r.json())
+    .then(r => {console.log(r); this.setState({
+      currentPlayer: r.user,
+    })})
+
+  }
+
+  handleLogOut = () => {
+    this.setState({
+      currentPlayer: null
+    })
+  }
+
 
   render() {
     const style = {
@@ -47,7 +97,7 @@ class App extends Component {
         <div className="container">
           <Router>
               <div>
-                <NavigationBar setCurrentTab={this.setCurrentTab} />
+                <NavigationBar currentPlayer={this.state.currentPlayer} setCurrentTab={this.setCurrentTab} handleFormLogin={this.handleFormLogin} handleFormRegister={this.handleFormRegister} handleLogOut={this.handleLogOut}/>
                   <ContentContainer>
                     <Switch>
                       <Route exact path="/about" render={About} />

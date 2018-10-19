@@ -46,59 +46,66 @@ export default class NavigationBar extends Component {
 
                           </NavItem>
                         </NavbarNav>
-                        <NavbarNav>
 
-                        </NavbarNav>
                         <NavbarNav right>
 
-                          <NavItem>
+                          <NavItem >
                             {!this.props.currentPlayer ?
-
-                                  <button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#signupLoginModal">
-                                    Login/Signup
+                                <span>
+                                  <button type="button" className="btn-sm btn-warning btn-rounded" data-toggle="modal" data-target="#signupLoginModal">
+                                    Login
                                   </button>
+                                  <span>    </span>
+                                  <button type="button" className="btn-sm btn-warning btn-rounded" data-toggle="modal" data-target="#modalRegisterForm">
+                                    Register
+                                  </button>
+                                </span>
                               :
-                              <PlayerCard style={{}} currentPlayer={{playerAvatar: null, playerName: "Scott", playerScore: 1337}} />
+                              <span>
+                                <table>
+                                  <tbody>
+                                    <tr>
+                                      <td>
+                                        <button type="button" className="btn-sm btn-warning btn-rounded" data-toggle="modal" data-target="#logOutForm">
+                                          Logout
+                                        </button>
+                                      </td>
+                                      <td>
+                                        <PlayerCard className="PlayerCard" currentPlayer={this.props.currentPlayer} />
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+
+
+
+                              </span>
                             }
                           </NavItem>
                         </NavbarNav>
-                        <NavbarNav>
 
-
-
-                          <div class="modal fade" id="signupLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                          <div class="modal fade" id="signupLoginModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                               <div class="modal-content">
-                                <form  onSubmit={e => {e.preventDefault(); debugger; console.log("form submit",e.target)}}>
+                                <form  onSubmit={e => {e.preventDefault(); console.log("form submit",e.target); this.props.handleFormLogin(e.target[1].value,e.target[2].value);}}>
                                   <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLongTitle">Login</h5>
-
-
-
 
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                       <span aria-hidden="true">&times;</span>
                                     </button>
                                   </div>
                                   <div class="modal-body" align="center">
-
-                                      <div class="imgcontainer">
-
+                                    <div class="imgcontainer">
                                       </div>
-
-                                      <div class="container">
-                                        <label for="uname"><b>Username :</b></label>
-                                        <input type="text" placeholder="Enter Username" name="uname" required />
-                                        <br></br>
-                                        <label for="psw"><b>Password :</b></label>
-                                        <input type="password" placeholder="Enter Password" name="psw" required />
-                                        <br></br>
-
-
+                                        <div class="container">
+                                          <label for="uname"><b>Username :</b></label>
+                                          <input type="text" placeholder="Enter Username" name="uname" required />
+                                          <br></br>
+                                          <label for="psw"><b>Password :</b></label>
+                                          <input type="password" placeholder="Enter Password" name="psw" required />
+                                          <br></br>
                                       </div>
-
-
-
                                   </div>
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -109,7 +116,55 @@ export default class NavigationBar extends Component {
                             </div>
                           </div>
 
-                        </NavbarNav>
+                          <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                  <form id="signupForm" onSubmit={e => {e.preventDefault(); console.log("form register",e.target); this.props.handleFormRegister(e.target[1].value,e.target[2].value,e.target[3].value);}}>
+                                    <div class="modal-header text-center">
+                                        <h4 class="modal-title w-100 font-weight-bold">Sign up</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body mx-3">
+                                        <div class="md-form mb-5">
+                                            <i class="fa fa-user prefix grey-text"></i>
+                                            <input type="text" id="orangeForm-name" class="form-control validate" placeholder="Your Name"/>
+                                            <label data-error="wrong" data-success="right" for="orangeForm-name"></label>
+                                        </div>
+                                        <div class="md-form mb-5">
+                                            <i class="fa fa-envelope prefix grey-text"></i>
+                                            <input type="email" id="orangeForm-email" class="form-control validate" placeholder="Your Email" />
+                                            <label data-error="wrong" data-success="right" for="orangeForm-email"></label>
+                                        </div>
+
+                                        <div class="md-form mb-4">
+                                            <i class="fa fa-lock prefix grey-text"></i>
+                                            <input type="password" id="orangeForm-pass" class="form-control validate" placeholder="Your Password"/>
+                                            <label data-error="wrong" data-success="right" for="orangeForm-pass"></label>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <button class="btn btn-deep-orange">Sign up</button>
+                                    </div>
+                                  </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="logOutForm" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLongTitle">Logged Out</h5>
+                                  <div class="modal-footer">
+                                    <button onClick={this.props.handleLogOut} type="button" class="btn btn-secondary" data-dismiss="modal">Log Out</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                     </Collapse>
                 </Navbar>
         );
