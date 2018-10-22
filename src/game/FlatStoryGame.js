@@ -1,163 +1,3 @@
-//
-//   //   console.log("component mounted! executing game!")
-//   //   var config = {
-//   //     type: Phaser.AUTO,
-//   //     width: 800,
-//   //     height: 600,
-//   //     scene:{
-//   //       preload: preload,
-//   //       create: create,
-//   //       update: update,
-//   //       render: render
-//   //     }
-//   //   };
-//   //   var game = new Phaser.Game(config);
-//   //
-//   //   function preload() {
-//   //       console.log()
-//   //       this.load.tilemap('level1', 'assets/starstruck/level1.json', null, Phaser.Tilemap.TILED_JSON);
-//   //       this.load.image('tiles-1', 'assets/starstruck/tiles-1.png');
-//   //       this.load.spritesheet('dude', 'assets/starstruck/dude.png', 32, 48);
-//   //       this.load.spritesheet('droid', 'assets/starstruck/droid.png', 32, 32);
-//   //       this.load.image('starSmall', 'assets/starstruck/star.png');
-//   //       this.load.image('starBig', 'assets/starstruck/star2.png');
-//   //       this.load.image('background', 'assets/starstruck/background2.png');
-//   //
-//   //   }
-//   //
-//   //   var map;
-//   //   var tileset;
-//   //   var layer;
-//   //   var player;
-//   //   var facing = 'left';
-//   //   var jumpTimer = 0;
-//   //   var cursors;
-//   //   var jumpButton;
-//   //   var bg;
-//   //
-//   //   function create() {
-//   //
-//   //       game.physics.startSystem(Phaser.Physics.ARCADE);
-//   //
-//   //       game.stage.backgroundColor = '#000000';
-//   //
-//   //       bg = game.add.tileSprite(0, 0, 800, 600, 'background');
-//   //       bg.fixedToCamera = true;
-//   //
-//   //       map = game.add.tilemap('level1');
-//   //
-//   //       map.addTilesetImage('tiles-1');
-//   //
-//   //       map.setCollisionByExclusion([ 13, 14, 15, 16, 46, 47, 48, 49, 50, 51 ]);
-//   //
-//   //       layer = map.createLayer('Tile Layer 1');
-//   //
-//   //       //  Un-comment this on to see the collision tiles
-//   //       //layer.debug = true;
-//   //
-//   //       layer.resizeWorld();
-//   //
-//   //       game.physics.arcade.gravity.y = 250;
-//   //
-//   //       player = game.add.sprite(32, 32, 'dude');
-//   //       game.physics.enable(player, Phaser.Physics.ARCADE);
-//   //
-//   //       player.body.bounce.y = 0.2;
-//   //       player.body.collideWorldBounds = true;
-//   //       player.body.setSize(20, 32, 5, 16);
-//   //
-//   //       player.animations.add('left', [0, 1, 2, 3], 10, true);
-//   //       player.animations.add('turn', [4], 20, true);
-//   //       player.animations.add('right', [5, 6, 7, 8], 10, true);
-//   //       // custom animations IMPLEMENT THESE IN A bit!
-//   //       /*
-//   //       play.animation.add('attack',[attack frames], fps, true);
-//   //       play.animation.add('die',[attack frames], fps, true);
-//   //       play.animation.add('jump',[attack frames], fps, true);
-//   //       */
-//   //
-//   //
-//   //       game.camera.follow(player);
-//   //
-//   //       cursors = game.input.keyboard.createCursorKeys();
-//   //       jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-//   //
-//   //   }
-//   //
-//   //   function update() {
-//   //
-//   //       game.physics.arcade.collide(player, layer);
-//   //
-//   //       player.body.velocity.x = 0;
-//   //
-//   //       if (cursors.left.isDown)
-//   //       {
-//   //           player.body.velocity.x = -150;
-//   //
-//   //           if (facing !== 'left')
-//   //           {
-//   //               player.animations.play('left');
-//   //               facing = 'left';
-//   //           }
-//   //       }
-//   //       else if (cursors.right.isDown)
-//   //       {
-//   //           player.body.velocity.x = 150;
-//   //
-//   //           if (facing !== 'right')
-//   //           {
-//   //               player.animations.play('right');
-//   //               facing = 'right';
-//   //           }
-//   //       }
-//   //       else
-//   //       {
-//   //           if (facing !== 'idle')
-//   //           {
-//   //               player.animations.stop();
-//   //
-//   //               if (facing === 'left')
-//   //               {
-//   //                   player.frame = 0;
-//   //               }
-//   //               else
-//   //               {
-//   //                   player.frame = 5;
-//   //               }
-//   //
-//   //               facing = 'idle';
-//   //           }
-//   //       }
-//   //
-//   //       if (jumpButton.isDown && player.body.onFloor() && game.time.now > jumpTimer)
-//   //       {
-//   //           player.body.velocity.y = -250;
-//   //           jumpTimer = game.time.now + 750;
-//   //       }
-//   //
-//   //   }
-//   //   function render(){
-//   //
-//   //   }
-//   // }//componentDidMount
-//   //
-//   //
-//   // render(){
-//   //
-//   //   //   game.debug.text(game.time.physicsElapsed, 32, 32);
-//   //   //   game.debug.body(player);
-//   //   //   game.debug.bodyInfo(player, 16, 24);
-//   //
-//   //      return (
-//   //        <div className="phaser-container"></div>
-//   //      )
-//   //
-//   // }
-//
-//   }
-// }
-
-// TEST CODE GAME ----------------------------------
 import React from 'react'
 import Phaser from 'phaser'
 
@@ -194,6 +34,9 @@ import Phaser from 'phaser'
         parent: 'phaser-container'
     }; //config
 
+    var map;
+    var worldLayer;
+    var tileset;
     var player;
     var stars;
     var bombs;
@@ -209,11 +52,14 @@ import Phaser from 'phaser'
 
      function preload ()
      {
+         this.load.image('tiles', 'assets/FlatStoryTileSet.png');
+         this.load.tilemapTiledJSON('map', 'assets/FlatStoryTileMap2.json')
+         //--------------
          this.load.image('flatStoryBG', './assets/flatStoryBG.png');
          this.load.image('ground', 'assets/platform.png');
          this.load.image('star', 'assets/ruby.png');
          this.load.image('bomb', 'assets/bomb.png');
-         this.load.spritesheet('josh', 'assets/joshua_SPRITE.png', { frameWidth: 50, frameHeight: 76 });
+         this.load.spritesheet('josh', 'assets/joshua_SPRITE.png', { frameWidth: 50, frameHeight: 70 });
          //32:48
 
 
@@ -221,21 +67,34 @@ import Phaser from 'phaser'
      function create ()
      {
           // Creates a Camera that will follow the player
-         this.cameras.main.setBounds(0, 0, 1920 * 2, 1080 * 2);
-         this.physics.world.setBounds(0, 0, 1920 * 2, 1080 * 2);
+         this.cameras.main.setBounds(0, 0, 3500, 2100);
+         this.physics.world.setBounds(0, 0, 3500, 2100);
          //  A simple background for our game
          this.add.image(1920 , 1080, 'flatStoryBG');
           //  The platforms group contains the ground and the 2 ledges we can jump on
          platforms = this.physics.add.staticGroup();
           //  Here we create the ground.
          //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-         platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+         // platforms.create(400, 568, 'ground').setScale(2).refreshBody();
           //  Now let's create some ledges
-         platforms.create(600, 400, 'ground');
-         platforms.create(50, 250, 'ground');
-         platforms.create(750, 300, 'ground');
+         // platforms.create(600, 400, 'ground');
+         // platforms.create(50, 250, 'ground');
+         // platforms.create(750, 300, 'ground');
+         //New TileMap Collision TEST -------------------------------------------------------------
+
+         map = this.make.tilemap({ key: "map" });
+         // console.log(map)
+         tileset = map.addTilesetImage("SimpleTutorialTileset","tiles");
+         // console.log(tileset)
+         worldLayer = map.createStaticLayer("Ground", tileset, 0, 0);
+         // console.log(worldLayer)
+         worldLayer.setCollisionByProperty({ collides: true });
+
+
+
+         // ---------------------------------------------------------------------------------------
           // The player and its settings
-         player = this.physics.add.sprite(100, 450, 'josh');
+         player = this.physics.add.sprite(100, 2000, 'josh');
           //  Player physics properties. Give the little guy a slight bounce.
          player.setBounce(0.0);
          player.setCollideWorldBounds(true);
@@ -277,6 +136,12 @@ import Phaser from 'phaser'
          scoreText = this.add.text(16, 16).setScrollFactor(0).setFontSize(32).setColor('#ffffff')
          scoreText.setText('Score: 0');
 
+          //  Set Collider to the TileMap We Made up top
+
+         this.physics.add.collider(player, worldLayer);
+         this.physics.add.collider(stars, worldLayer);
+         this.physics.add.collider(bombs, worldLayer);
+
 
           //  Collide the player and the stars with the platforms
          this.physics.add.collider(player, platforms);
@@ -289,9 +154,9 @@ import Phaser from 'phaser'
      function update ()
      {
        // console.log("Player position: ", player.x,",", player.y)
-         if(player.y === 2122) // update this
+         if(player.y >= 2100) // update this 2122 is bottom
          {
-           gameOver = true;
+            gameOver = true;
          }
 
          if (gameOver)
@@ -328,9 +193,9 @@ import Phaser from 'phaser'
              player.setVelocityX(0);
               player.anims.play('turn');
          }
-          if (cursors.up.isDown && player.body.touching.down)
+          if (cursors.up.isDown && player.body.onFloor())
          {
-             player.setVelocityY(-330);
+             player.setVelocityY(-420);
          }
      }
      function collectStar (player, star)
