@@ -1,0 +1,14 @@
+{ "columns":21,
+ "image":"FlatStoryTileSet.png",
+ "imageheight":490,
+ "imagewidth":1470,
+ "margin":0,
+ "name":"SimpleTutorialTileset",
+ "spacing":0,
+ "tilecount":147,
+ "tiledversion":"1.2.0",
+ "tileheight":70,
+ "tilewidth":70,
+ "type":"tileset",
+ "version":1.2
+}
