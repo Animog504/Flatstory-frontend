@@ -1,57 +1,3 @@
-// import React, { Component } from 'react';
-// import Phaser from 'phaser';
-//
-// export default class FlatStoryGame extends Component{
-//
-//   componentDidMount(){
-//
-//     var config = {
-//         type: Phaser.AUTO,
-//         width: 800,
-//         height: 600,
-//         physics: {
-//             default: 'arcade',
-//             arcade: {
-//                 gravity: { y: 200 }
-//             }
-//         },
-//         scene: {
-//             preload: preload,
-//             create: create
-//         }
-//     };
-//
-//     var game = new Phaser.Game(config);
-//
-//     function preload ()
-//     {
-//         this.load.setBaseURL('http://labs.phaser.io');
-//
-//         this.load.image('sky', 'assets/skies/space3.png');
-//         this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-//         this.load.image('red', 'assets/particles/red.png');
-//     }
-//
-//     function create ()
-//     {
-//         this.add.image(400, 300, 'sky');
-//
-//         var particles = this.add.particles('red');
-//
-//         var emitter = particles.createEmitter({
-//             speed: 100,
-//             scale: { start: 1, end: 0 },
-//             blendMode: 'ADD'
-//         });
-//
-//         var logo = this.physics.add.image(400, 100, 'logo');
-//
-//         logo.setVelocity(100, 200);
-//         logo.setBounce(1, 1);
-//         logo.setCollideWorldBounds(true);
-//
-//         emitter.startFollow(logo);
-//     }
 //
 //   //   console.log("component mounted! executing game!")
 //   //   var config = {
@@ -259,21 +205,26 @@ import Phaser from 'phaser'
 
     var game = this.game = new Phaser.Game(config);
      console.log(game);
-game.input.events.on('keydown', console.log)
+     game.input.events.on('keydown', console.log)
 
      function preload ()
      {
-         this.load.image('maple', './assets/maple.png');
+         this.load.image('flatStoryBG', './assets/flatStoryBG.png');
          this.load.image('ground', 'assets/platform.png');
          this.load.image('star', 'assets/ruby.png');
          this.load.image('bomb', 'assets/bomb.png');
          this.load.spritesheet('josh', 'assets/joshua_SPRITE.png', { frameWidth: 50, frameHeight: 76 });
          //32:48
+
+
      }
      function create ()
      {
+          // Creates a Camera that will follow the player
+         this.cameras.main.setBounds(0, 0, 1920 * 2, 1080 * 2);
+         this.physics.world.setBounds(0, 0, 1920 * 2, 1080 * 2);
          //  A simple background for our game
-         this.add.image(400, 300, 'maple');
+         this.add.image(1920 , 1080, 'flatStoryBG');
           //  The platforms group contains the ground and the 2 ledges we can jump on
          platforms = this.physics.add.staticGroup();
           //  Here we create the ground.
@@ -288,6 +239,9 @@ game.input.events.on('keydown', console.log)
           //  Player physics properties. Give the little guy a slight bounce.
          player.setBounce(0.0);
          player.setCollideWorldBounds(true);
+         // Attach Camera to Player
+         this.cameras.main.startFollow(player)
+         this.cameras.main.followOffset.set(0, 0); // no offset yet (might change later)
           //  Our player animations, turning, walking left and walking right.
          this.anims.create({
              key: 'left',
@@ -320,7 +274,10 @@ game.input.events.on('keydown', console.log)
           });
           bombs = this.physics.add.group();
           //  The score
-         scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+         scoreText = this.add.text(16, 16).setScrollFactor(0).setFontSize(32).setColor('#ffffff')
+         scoreText.setText('Score: 0');
+
+
           //  Collide the player and the stars with the platforms
          this.physics.add.collider(player, platforms);
          this.physics.add.collider(stars, platforms);
@@ -331,6 +288,12 @@ game.input.events.on('keydown', console.log)
      }
      function update ()
      {
+       // console.log("Player position: ", player.x,",", player.y)
+         if(player.y === 2122)
+         {
+           gameOver = true;
+         }
+
          if (gameOver)
          {
            console.log("game over man! your score was:", score)
