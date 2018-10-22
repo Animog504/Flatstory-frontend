@@ -289,7 +289,7 @@ import Phaser from 'phaser'
      function update ()
      {
        // console.log("Player position: ", player.x,",", player.y)
-         if(player.y === 2122)
+         if(player.y === 2122) // update this
          {
            gameOver = true;
          }
