@@ -180,12 +180,12 @@ import Phaser from 'phaser'
          }
          if (cursors.left.isDown)
          {
-             player.setVelocityX(-160);
+             player.setVelocityX(-300);
               player.anims.play('left', true);
          }
          else if (cursors.right.isDown)
          {
-             player.setVelocityX(160);
+             player.setVelocityX(300);
               player.anims.play('right', true);
          }
          else
@@ -195,7 +195,7 @@ import Phaser from 'phaser'
          }
           if (cursors.up.isDown && player.body.onFloor())
          {
-             player.setVelocityY(-420);
+             player.setVelocityY(-400);
          }
      }
      function collectStar (player, star)
