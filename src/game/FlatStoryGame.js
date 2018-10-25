@@ -94,7 +94,13 @@ let socket = io(`http://localhost:8081`)
           });
         });
 
-
+        this.socket.on('playerMoved', function (playerInfo) {
+          self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+            if (playerInfo.playerId === otherPlayer.playerId) {
+              otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+            }
+          });
+        });
        //=============================================================
           // Creates a Camera that will follow the player
          this.cameras.main.setBounds(0, 0, 3500, 2100);
@@ -103,14 +109,14 @@ let socket = io(`http://localhost:8081`)
          this.add.image(1920 , 1080, 'flatStoryBG');
           //  The platforms group contains the ground and the 2 ledges we can jump on
          platforms = this.physics.add.staticGroup();
-          //  Here we create the ground.
+         //  Here we create the ground.
          //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
          // platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-          //  Now let's create some ledges
+         //  Now let's create some ledges
          // platforms.create(600, 400, 'ground');
          // platforms.create(50, 250, 'ground');
          // platforms.create(750, 300, 'ground');
-         //New TileMap Collision TEST -------------------------------------------------------------
+         // New TileMap Collision TEST -------------------------------------------------------------
 
          map = this.make.tilemap({ key: "map" });
          // console.log(map)
@@ -123,15 +129,15 @@ let socket = io(`http://localhost:8081`)
 
 
          // ---------------------------------------------------------------------------------------
-          // The player and its settings
-         player = this.physics.add.sprite(100, 2000, 'josh');
-          //  Player physics properties. Give the little guy a slight bounce.
+         // The player and its settings
+        player = this.physics.add.sprite(100, 2000, 'josh');
+         //  //  Player physics properties. Give the little guy a slight bounce.
          player.setBounce(0.0);
          player.setCollideWorldBounds(true);
-         // Attach Camera to Player
-         this.cameras.main.startFollow(player)
-         this.cameras.main.followOffset.set(0, 0); // no offset yet (might change later)
-          //  Our player animations, turning, walking left and walking right.
+         // // Attach Camera to Player
+         // this.cameras.main.startFollow(player)
+         // this.cameras.main.followOffset.set(0, 0); // no offset yet (might change later)
+         //  Our player animations, turning, walking left and walking right.
          this.anims.create({
              key: 'left',
              frames: this.anims.generateFrameNumbers('josh', { start: 0, end: 3 }),
@@ -150,11 +156,11 @@ let socket = io(`http://localhost:8081`)
              repeat: -1
          });
           //  Input Events
-         cursors = this.input.keyboard.createCursorKeys();
+         this.cursors = this.input.keyboard.createCursorKeys();
           //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
          stars = this.physics.add.group({
              key: 'star',
-             repeat: 11,
+             repeat: 35,
              setXY: { x: 12, y: 0, stepX: 70 }
          });
           stars.children.iterate(function (child) {
@@ -173,13 +179,13 @@ let socket = io(`http://localhost:8081`)
          this.physics.add.collider(bombs, worldLayer);
 
 
-          //  Collide the player and the stars with the platforms
-         this.physics.add.collider(player, platforms);
-         this.physics.add.collider(stars, platforms);
-         this.physics.add.collider(bombs, platforms);
-          //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
+         //  Collide the player and the stars with the platforms
+         // this.physics.add.collider(player, platforms);
+         // this.physics.add.collider(stars, platforms);
+         // this.physics.add.collider(bombs, platforms);
+         //  Checks to see if the player overlaps with any of the gems, if he does call the collectStar function
          this.physics.add.overlap(player, stars, collectStar, null, this);
-          this.physics.add.collider(player, bombs, hitBomb, null, this);
+         this.physics.add.collider(player, bombs, hitBomb, null, this);
        }
        function update ()
        {
@@ -208,25 +214,51 @@ let socket = io(`http://localhost:8081`)
 
              // return;
            }
-           if (cursors.left.isDown)
-           {
-               player.setVelocityX(-300);
-                player.anims.play('left', true);
+           if(this.josh){
+             if (this.cursors.left.isDown)
+             {
+                 this.josh.setVelocityX(-300);
+                  this.josh.anims.play('left', true);
+             }
+             else if (this.cursors.right.isDown)
+             {
+                 this.josh.setVelocityX(300);
+                  this.josh.anims.play('right', true);
+             }
+             else
+             {
+                 this.josh.setVelocityX(0);
+                  this.josh.anims.play('turn');
+             }
+              if (this.cursors.up.isDown && this.josh.body.onFloor())
+             {
+                 this.josh.setVelocityY(-400);
+             }
+
+             //update other player movements
+             // emit player movement
+
+             updatePlayerPosition(this,this.josh);
            }
-           else if (cursors.right.isDown)
-           {
-               player.setVelocityX(300);
-                player.anims.play('right', true);
-           }
-           else
-           {
-               player.setVelocityX(0);
-                player.anims.play('turn');
-           }
-            if (cursors.up.isDown && player.body.onFloor())
-           {
-               player.setVelocityY(-400);
-           }
+
+
+
+
+       }
+       function updatePlayerPosition(game,josh){
+         debugger;
+         var x = josh.x;
+         var y = josh.y;
+
+         if (josh.oldPosition && (x !== josh.oldPosition.x || y !== josh.oldPosition.y)) {
+           game.socket.emit('playerMovement', { x: josh.x, y: josh.y});
+         }
+
+         // save old position data
+         josh.oldPosition = {
+           x: josh.x,
+           y: josh.y,
+         };
        }
        function collectStar (player, star)
        {
@@ -260,22 +292,31 @@ let socket = io(`http://localhost:8081`)
 
 
       }
-      function addPlayer(self, playerInfo) {
-        self.josh = this.physics.add.sprite(300, 2000, 'josh');
+      function addPlayer(self, playerInfo){
+        console.log("addPlayer:", self," ", playerInfo)
+
+        self.josh = self.physics.add.sprite(300, 1600, 'josh');
         if (playerInfo.team === 'blue') {
-          self.josh.setTint(0x0000ff);
+          self.josh.setTint(0xaaaaff);
         } else {
-          self.josh.setTint(0xff0000);
+          self.josh.setTint(0xffaaaa);
         }
+        self.cameras.main.startFollow(self.josh)
+        self.physics.add.collider(self.josh, worldLayer);
+        self.josh.setCollideWorldBounds(true);
+
       }
       function addOtherPlayers(self, playerInfo) {
-       const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'josh');
+        console.log("addOtherPlayer:", self," ", playerInfo)
+       const otherPlayer = self.physics.add.sprite(playerInfo.x, playerInfo.y, 'josh').setOrigin(0.5, 0.5);
+       otherPlayer.setCollideWorldBounds(true);
        if (playerInfo.team === 'blue') {
-         otherPlayer.setTint(0x0000ff);
+         otherPlayer.setTint(0xaaaaff);
        } else {
-         otherPlayer.setTint(0xff0000);
+         otherPlayer.setTint(0xffaaaa);
        }
        otherPlayer.playerId = playerInfo.playerId;
+       self.physics.add.collider(otherPlayer, worldLayer);
        self.otherPlayers.add(otherPlayer);
      }
 
@@ -291,7 +332,7 @@ let socket = io(`http://localhost:8081`)
 
   render(){
      return(
-        <div id="phaser-container" gameOver={this.props.gameOver}>
+        <div id="phaser-container">
         </div>
       )
 }//render
