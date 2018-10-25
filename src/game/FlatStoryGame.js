@@ -2,13 +2,14 @@ import React from 'react'
 import Phaser from 'phaser'
 import io from 'socket.io-client'
 
-let socket = io(`http://localhost:8081`)
+let socket = io(`http://10.185.3.7:8081`)
  //let Phaser = require('../../../node_modules/phaser/src/phaser-arcade-physics.js')
  export default class GameBeta extends React.Component{
    constructor(props){
      super(props)
      this.gameOver = props.gameOver
      this.state = {
+       started: false,
        myScore: 0
      }
   }//constructor
@@ -16,6 +17,7 @@ let socket = io(`http://localhost:8081`)
      this.playGame();
    }
    playGame(){
+
      console.log("ComponentOnLoad")
      var config = {
         type: Phaser.AUTO,
@@ -132,8 +134,8 @@ let socket = io(`http://localhost:8081`)
          // The player and its settings
         player = this.physics.add.sprite(100, 2000, 'josh');
          //  //  Player physics properties. Give the little guy a slight bounce.
-         player.setBounce(0.0);
-         player.setCollideWorldBounds(true);
+         // player.setBounce(0.0);
+         // player.setCollideWorldBounds(true);
          // // Attach Camera to Player
          // this.cameras.main.startFollow(player)
          // this.cameras.main.followOffset.set(0, 0); // no offset yet (might change later)
@@ -160,7 +162,7 @@ let socket = io(`http://localhost:8081`)
           //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
          stars = this.physics.add.group({
              key: 'star',
-             repeat: 35,
+             repeat: 30,
              setXY: { x: 12, y: 0, stepX: 70 }
          });
           stars.children.iterate(function (child) {
@@ -214,50 +216,50 @@ let socket = io(`http://localhost:8081`)
 
              // return;
            }
-           if(this.josh){
+           if(this.player){
              if (this.cursors.left.isDown)
              {
-                 this.josh.setVelocityX(-300);
-                  this.josh.anims.play('left', true);
+                 this.player.setVelocityX(-300);
+                  this.player.anims.play('left', true);
              }
              else if (this.cursors.right.isDown)
              {
-                 this.josh.setVelocityX(300);
-                  this.josh.anims.play('right', true);
+                 this.player.setVelocityX(300);
+                  this.player.anims.play('right', true);
              }
              else
              {
-                 this.josh.setVelocityX(0);
-                  this.josh.anims.play('turn');
+                 this.player.setVelocityX(0);
+                  this.player.anims.play('turn');
              }
-              if (this.cursors.up.isDown && this.josh.body.onFloor())
+              if (this.cursors.up.isDown && this.player.body.onFloor())
              {
-                 this.josh.setVelocityY(-400);
+                 this.player.setVelocityY(-400);
              }
 
              //update other player movements
              // emit player movement
 
-             updatePlayerPosition(this,this.josh);
+             updatePlayerPosition(this,this.player);
            }
 
 
 
 
        }
-       function updatePlayerPosition(game,josh){
-         debugger;
-         var x = josh.x;
-         var y = josh.y;
+       function updatePlayerPosition(game,player){
 
-         if (josh.oldPosition && (x !== josh.oldPosition.x || y !== josh.oldPosition.y)) {
-           game.socket.emit('playerMovement', { x: josh.x, y: josh.y});
+         var x = player.x;
+         var y = player.y;
+
+         if (player.oldPosition && (x !== player.oldPosition.x || y !== player.oldPosition.y)) {
+           game.socket.emit('playerMovement', { x: player.x, y: player.y});
          }
 
          // save old position data
-         josh.oldPosition = {
-           x: josh.x,
-           y: josh.y,
+         player.oldPosition = {
+           x: player.x,
+           y: player.y,
          };
        }
        function collectStar (player, star)
@@ -282,10 +284,12 @@ let socket = io(`http://localhost:8081`)
        }
       function hitBomb (player, bomb)
       {
-          this.physics.pause();
+          // player.physics.pause(); broken atm.
           player.setTint(0xff0000);
           player.anims.play('turn');
-          gameOver = true;
+          //gameOver = true;
+          console.log("Oh noes ", player, " got hit! you had a score of: ", score)
+          score = 0;
 
 
 
@@ -295,15 +299,18 @@ let socket = io(`http://localhost:8081`)
       function addPlayer(self, playerInfo){
         console.log("addPlayer:", self," ", playerInfo)
 
-        self.josh = self.physics.add.sprite(300, 1600, 'josh');
+        self.player = self.physics.add.sprite(300, 1600, 'josh');
         if (playerInfo.team === 'blue') {
-          self.josh.setTint(0xaaaaff);
+          self.player.setTint(0xaaaaff);
         } else {
-          self.josh.setTint(0xffaaaa);
+          self.player.setTint(0xffaaaa);
         }
-        self.cameras.main.startFollow(self.josh)
-        self.physics.add.collider(self.josh, worldLayer);
-        self.josh.setCollideWorldBounds(true);
+        self.cameras.main.startFollow(self.player)
+        self.physics.add.collider(self.player, worldLayer);
+        self.physics.add.overlap(self.player, stars, collectStar, null, this);
+        self.physics.add.collider(self.player, bombs, hitBomb, null, this);
+        self.physics.add.collider(self.player, self.otherPlayer);
+        self.player.setCollideWorldBounds(true);
 
       }
       function addOtherPlayers(self, playerInfo) {
@@ -317,6 +324,9 @@ let socket = io(`http://localhost:8081`)
        }
        otherPlayer.playerId = playerInfo.playerId;
        self.physics.add.collider(otherPlayer, worldLayer);
+       self.physics.add.overlap(otherPlayer, stars, collectStar, null, this);
+       self.physics.add.collider(otherPlayer, bombs, hitBomb, null, this);
+       self.physics.add.collider(otherPlayer, self.player);
        self.otherPlayers.add(otherPlayer);
      }
 

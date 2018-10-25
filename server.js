@@ -1,8 +1,16 @@
 var express = require('express');
 var app = express();
+// var server = require('http').Server(app);
+//
+// var io = require('socket.io').listen(server);
+//-------------
 var server = require('http').Server(app);
-
 var io = require('socket.io').listen(server);
+
+
+
+//-------------
+
 
 var players = {};
 //changed /public to /src/game since that's where the game is housed.
@@ -45,6 +53,8 @@ io.on('connection', function (socket) {
 
 });
 
-server.listen(8081, function () {
-  console.log(`Listening on ${server.address().port}`);
-});
+// server.listen(8081, function () {
+//   console.log(`Listening on ${server.address().port}`);
+// });
+console.log("THIS IS THE SERVER" ,server)
+server.listen(8081, '0.0.0.0', function(){console.log(`listening on ${server.address().address}:${server.address().port}`)});

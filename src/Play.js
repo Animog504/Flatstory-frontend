@@ -6,7 +6,7 @@ const Play = (props) => {
   return (
     <React.Fragment>
         <FlatStoryGame />
-        <script src="/socket.io/socket.io.js?x92588"></script>
+        
     </React.Fragment>
   )
 }
