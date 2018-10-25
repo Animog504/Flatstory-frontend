@@ -6,7 +6,6 @@ const Play = (props) => {
   return (
     <React.Fragment>
         <FlatStoryGame />
-        
     </React.Fragment>
   )
 }

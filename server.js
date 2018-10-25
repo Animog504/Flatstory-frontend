@@ -4,7 +4,7 @@ var app = express();
 //
 // var io = require('socket.io').listen(server);
 //-------------
-var server = require('http').Server(app);
+var server = require('http').Server(app); //oh man
 var io = require('socket.io').listen(server);
 
 

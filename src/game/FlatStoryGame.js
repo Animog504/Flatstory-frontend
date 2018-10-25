@@ -2,7 +2,7 @@ import React from 'react'
 import Phaser from 'phaser'
 import io from 'socket.io-client'
 
-let socket = io(`http://10.185.3.7:8081`)
+let socket = io(`http://10.185.3.7:8081`) // local ip address
  //let Phaser = require('../../../node_modules/phaser/src/phaser-arcade-physics.js')
  export default class GameBeta extends React.Component{
    constructor(props){
